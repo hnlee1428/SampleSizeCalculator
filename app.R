@@ -1,6 +1,9 @@
+if (!require(tidyverse)) {
+  install.packages("tidyverse")
+  library(tidyverse)
+}
 library(shiny)
 library(ggplot2)
-library(tidyverse)
 library(DT)
 library(plotly)
 
