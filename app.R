@@ -1,6 +1,6 @@
 library(shiny)
 library(ggplot2)
-library(dplyr)
+library(tidyverse)
 library(DT)
 library(plotly)
 
@@ -268,7 +268,7 @@ server <- function(input, output){
               color = "dodgeblue4"))))
     
     if(no.group == 1) {
-      p <- p %>% add_trace(
+      p <- p %>% plotly::add_trace(
         data = NULL,
         x = numeric(0), y = numeric(0),
         name = unique(res_data$potential_x),
