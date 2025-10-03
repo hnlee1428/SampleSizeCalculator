@@ -189,11 +189,13 @@ server <- function(input, output){
       '<span style="color: #004080;"> With </span>',
       '<span style="color: #004080;">', as.integer(100*(1-as.numeric(input$confidence_choice_inference))),'</span>',
       '<span style="color: #004080;">% confidence, </span>',
-      '<span style="color: #004080; background-color: yellow;">the upper bound of K (K<sub>U</sub>) is smaller than </span>',
+      '<span style="color: #004080; background-color: yellow;">K (K/N) is smaller than </span>',
       '<span style="color: #004080; background-color: yellow;">', inference() ,'</span>',
-      '<span style="color: #004080; background-color: yellow;">. (i.e., K/N < </span>',
+      '<span style="color: #004080; background-color: yellow;"> (,
       '<span style="color: #004080; background-color: yellow;">', round(inference()/input$N_inference, 4) ,'</span>',
-      '<span style="color: #004080; background-color: yellow;">).</span><br><br>',
+      '<span style="color: #004080; background-color: yellow;">). i.e., The upper bound of K (K<sub>U</sub>) is </span>',
+      '<span style="color: #004080; background-color: yellow;">', inference() ,'</span>',
+      '<span style="color: #004080; background-color: yellow;">.</span><br><br>',
       '<span style="color: #4d4d4d;"> To obtain an upper bound on the total negative weight, use the product of K<sub>U</sub> and W<sub>U</sub>, where W<sub>U</sub> is an upper bound for the mean weight of negative items (e.g., t-upper-bound or a known physical maximum).</span><br><br>'
     ))
   })
