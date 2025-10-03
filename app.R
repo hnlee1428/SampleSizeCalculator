@@ -63,7 +63,7 @@ ui <- fluidPage(
         tabPanel("Description", 
                  withMathJax(),
                  tags$div(style = "padding: 20px; max-width: 800px;",
-                          tags$h4("Our inference here relies on the hypergeometric distribution, which models sampling without replacement from a finite population."),
+                          tags$h4("Our inference assumes a hypergeometric sampling model-simple random sampling without replacement (SRSWOR) from a finite population-with K/N small."),
                           
                           tags$h3("Hypergeometric Distribution"),
                           tags$h4("Notation:"),
@@ -178,23 +178,24 @@ server <- function(input, output){
     
     
   })
-  
+ 
   output$inference_out <- renderUI({
-    #inference()
     HTML(paste0(
       '<span style="color: #CC0000;"> <br>K</span>',
-      '<span style="color: #4d4d4d;">: the number of negative itmes in the population, you want to infer.</span><br>',
+      '<span style="color: #4d4d4d;">: the number of negative items in the population, you want to infer.</span><br>',
       '<span style="color: #4d4d4d;"> As you observed</span>',
       '<span style="color: #1338BE;"> ', input$x, '</span>',
       '<span style="color: #4d4d4d;"> negative items in the sample, you can say:</span><br>',
       '<span style="color: #004080;"> With </span>',
       '<span style="color: #004080;">', as.integer(100*(1-as.numeric(input$confidence_choice_inference))),'</span>',
       '<span style="color: #004080;">% confidence, </span>',
-      '<span style="color: #004080; background-color: yellow;">K is smaller than </span>',
+      '<span style="color: #004080; background-color: yellow;">the upper bound of K (K<sub>U</sub>) is smaller than </span>',
       '<span style="color: #004080; background-color: yellow;">', inference() ,'</span>',
       '<span style="color: #004080; background-color: yellow;">. (i.e., K/N < </span>',
       '<span style="color: #004080; background-color: yellow;">', round(inference()/input$N_inference, 4) ,'</span>',
-      '<span style="color: #004080; background-color: yellow;">).</span><br><br>'))
+      '<span style="color: #004080; background-color: yellow;">).</span><br><br>',
+      '<span style="color: #4d4d4d;"> To obtain an upper bound on the total negative weight, use the product of K<sub>U</sub> and W<sub>U</sub>, where W<sub>U</sub> is an upper bound for the mean weight of negative items (e.g., t-upper-bound or a known physical maximum).</span><br><br>'
+    ))
   })
   
   output$inference_out2 <- renderUI({
@@ -210,7 +211,7 @@ server <- function(input, output){
     max.K.to.show <- inference()
     
     allowed_no_negatives <- input$x+input$add_x
-    n_seq <- input$n:as.integer(input$N_inference*0.3)
+    n_seq <- input$n:as.integer(min(input$n*5, input$N_inference*0.3))
     
     res <- 0:allowed_no_negatives %>%
       map(~c())
@@ -251,7 +252,7 @@ server <- function(input, output){
                      tickvals = x_ticks),
         yaxis = list(title = "Minimum q to support K/N < q",
                      tickvals = y_ticks),
-        legend = list(title = list(text = "Possible observed value of x: "),
+        legend = list(title = list(text = "Potential observed value of x: "),
                       orientation = "h",     # horizontal layout
                       x = 0.5,               # center horizontally
                       xanchor = "center",    # align x to center of legend box
